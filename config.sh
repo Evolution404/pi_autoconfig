@@ -1,10 +1,17 @@
+#!/bin/bash
+if [ $# -ne 1 ];then
+  echo 没有传入samba服务器的密码
+  exit 1
+fi
 echo 配置locale和wifi国家
 raspi-config nonint do_change_locale en_US.UTF-8
+
 if [ `raspi-config nonint get_wifi_country` == US ]; then
   echo wifi已经是US了无需设置
 else
   raspi-config nonint do_wifi_country US
 fi
+
 echo 修改时区
 raspi-config nonint do_change_timezone Asia/Shanghai
 
@@ -59,6 +66,7 @@ if [ ! -f /etc/systemd/system/subconverter.service ]; then
   cp proxy/subconverter/subconverter.service /etc/systemd/system
 fi
 systemctl enable subconverter
+systemctl start subconverter
 
 echo 开启ip转发
 sed -i 's/^#\(net\.ipv4\.ip_forward=1\)/\1/' /etc/sysctl.conf
@@ -82,6 +90,7 @@ if [ ! -f /etc/systemd/system/clash.service ]; then
   cp proxy/clash/clash.service /etc/systemd/system
 fi
 systemctl enable clash
+systemctl start clash
 
 echo 配置tproxy
 mkdir -p /etc/iptables
@@ -95,18 +104,23 @@ if [ ! -f /etc/systemd/system/tproxy.service ]; then
   cp proxy/tproxy/tproxy.service /etc/systemd/system
 fi
 systemctl enable tproxy
+systemctl start tproxy
 
 echo 配置proxychains
 type proxychains > /dev/null 2>&1 || apt install -y proxychains
 sed -i 's/^socks4 \t127.0.0.1 9050/socks5  127.0.0.1 7890/' /etc/proxychains.conf
 sed -i 's/^#\(quiet_mode\)/\1/' /etc/proxychains.conf
+curl -x localhost:7890 google.com >> /dev/null
+if [ $? -eq 0 ]; then
+  proxy=proxychains
+fi
 
 echo 配置awtrix
 type java > /dev/null 2>&1
 if [ $? -ne 0 ];then
-  proxychains apt update
-  proxychains apt upgrade -y
-  proxychains apt install -y default-jdk
+  $proxy apt update
+  $proxy apt upgrade -y
+  $proxy apt install -y default-jdk
 fi
 
 if [ ! -d /usr/local/awtrix ]; then
@@ -119,13 +133,14 @@ if [ ! -f /etc/systemd/system/awtrix.service ]; then
   cp awtrix/awtrix.service /etc/systemd/system
 fi
 systemctl enable awtrix
+systemctl start awtrix
 
 echo 安装vim
 type vim > /dev/null 2>&1
 if [ $? -ne 0 ];then
-  type git > /dev/null 2>&1 || proxychains apt install -y git ncurses-dev
+  type git > /dev/null 2>&1 || $proxy apt install -y git ncurses-dev
   cd /home/pi
-  proxychains git clone https://github.com/vim/vim.git
+  $proxy git clone https://github.com/vim/vim.git
   cd vim
   ./configure --with-features=huge --enable-multibyte --enable-python3interp=yes --with-python-config-dir=/usr/lib/python3.7/config-3.7m-arm-linux-gnueabihf --enable-cscope --prefix=/usr/local
   make -j4
@@ -136,7 +151,7 @@ fi
 
 
 echo 安装samba
-type smbd > /dev/null 2>&1 ||  proxychains apt install -y samba
+type smbd > /dev/null 2>&1 ||  $proxy apt install -y samba
 
 grep -q "NAS" /etc/samba/smb.conf
 if [ $? -ne 0 ];then
@@ -162,8 +177,9 @@ END_TEXT
   echo "写入samba配置成功"
 fi
 pdbedit -L | grep -q pi
-if [ $? -ne 0 ];then
-  smbpasswd -a pi
-else
-  echo samba的用户已经创建
+if [ $? -eq 0 ];then
+  echo samba的用户已经创建,删除旧用户重新创建
+  smbpasswd -x pi
 fi
+  (echo $1;echo $1) | smbpasswd -a pi
+  echo samba配置信息 用户名:pi 密码:$1
