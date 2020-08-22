@@ -1,0 +1,131 @@
+mixed-port: 7890
+redir-port: 7892
+external-controller: 0.0.0.0:80
+external-ui: clash-dashboard
+secret: "123456"
+allow-lan: true
+mode: rule
+log-level: info
+
+dns:
+  enable: true
+  ipv6: false
+  listen: 0.0.0.0:53
+  enhanced-mode: redir-host
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
+    - 8.8.8.8
+    - https://dns.alidns.com/dns-query # DNS-over-HTTPS
+
+proxy-groups:
+  - name: "best"
+    type: url-test
+    use:
+      - westworldT-Sub
+      - westworldV-Sub
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+
+  - name: "MATCH"
+    type: select
+    proxies:
+      - best
+      - DIRECT
+
+  - name: "westworldT"
+    type: select
+    use:
+      - westworldT-Sub
+
+  - name: "westworldV"
+    type: select
+    use:
+      - westworldV-Sub
+
+
+proxy-providers:
+  westworldT-Sub:
+    type: http
+    url: "http://127.0.0.1:25500/sub?target=clash&url=https%3A%2F%2Fxbrss.com%2Frss%2Fv809dCv%2FEQCdo6%3Fnet_type%3DTROJAN&exclude=%E5%89%A9%E4%BD%99%7C%E5%AE%98%E7%BD%91%7C%E8%AE%A2%E9%98%85%7C----&emoji=false&list=true&udp=false&tfo=false&scv=true&fdn=false&sort=false"
+    interval: 3600
+    path: ./Proxy/westworldTList.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
+
+  westworldV-Sub:
+    type: http
+    url: "http://127.0.0.1:25500/sub?target=clash&url=https%3A%2F%2Fxbrss.com%2Frss%2Fv809dCv%2FEQCdo6%3Fnet_type%3DVMESS&exclude=%E5%89%A9%E4%BD%99%7C%E5%AE%98%E7%BD%91%7C%E8%AE%A2%E9%98%85%7C----&emoji=false&list=true&udp=false&tfo=false&scv=false&fdn=false&sort=false"
+    interval: 3600
+    path: ./Proxy/westworldVList.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
+
+rule-providers:
+  Unbreak:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Unbreak.yaml
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Unbreak.yaml
+    interval: 86400
+
+  Streaming:
+    type: http
+    behavior: classical
+    path: ./RuleSet/StreamingMedia/Streaming.yaml
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/StreamingMedia/Streaming.yaml
+    interval: 86400
+
+  StreamingSE:
+    type: http
+    behavior: classical
+    path: ./RuleSet/StreamingMedia/StreamingSE.yaml
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/StreamingMedia/StreamingSE.yaml
+    interval: 86400
+
+  Global:
+    type: http
+    behavior: classical
+    path: ./RuleSet/Global.yaml
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Global.yaml
+    interval: 86400
+
+  China:
+    type: http
+    behavior: classical
+    path: ./RuleSet/China.yaml
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/China.yaml
+    interval: 86400
+
+  ChinaIP:
+    type: http
+    behavior: ipcidr
+    path: ./RuleSet/Extra/ChinaIP.yaml
+    url: https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/Extra/ChinaIP.yaml
+    interval: 86400
+
+
+rules:
+  - RULE-SET,Unbreak,DIRECT
+  - RULE-SET,Streaming,best
+  - RULE-SET,StreamingSE,DIRECT
+  - RULE-SET,China,DIRECT
+  - RULE-SET,ChinaIP,DIRECT
+  - RULE-SET,Global,best
+
+  - IP-CIDR,192.168.0.0/16,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - IP-CIDR,100.64.0.0/10,DIRECT
+  - IP-CIDR,224.0.0.0/4,DIRECT
+
+  - IP-CIDR,119.28.28.28/32,DIRECT
+  - IP-CIDR,182.254.116.0/24,DIRECT
+  - GEOIP,CN,DIRECT
+
+  - MATCH,MATCH

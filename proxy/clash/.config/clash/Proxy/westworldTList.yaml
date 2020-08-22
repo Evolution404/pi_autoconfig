@@ -1,0 +1,21 @@
+proxies:
+  - {name: 流媒体·美国US·DA238·空闲·不限流量·Netflix HBO·1000M, server: uss10n.wwap1.com, port: 14813, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 流媒体·美国US·DA193·空闲·不限流量·Netflix HBO·300M, server: 154.17.8.195, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 流媒体·美国US·DA44·空闲·不限流量·Netflix HBO·300M, server: 154.17.8.226, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 流媒体·美国US·DA240·空闲·不限流量·Netflix HBO·300M, server: 154.17.7.240, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 流媒体·美国US·139·空闲·不限流量·Netflix HBO Hulu·1000M, server: 154.17.13.139, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 流媒体·美国US·I16·空闲·不限流量·Netflix HBO·200M, server: 195.123.242.16, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 流媒体·瑞士SW·I60·空闲·不限流量·Netflix HBO·200M, server: 45.90.58.60, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 流媒体·新加坡SP·I248·空闲·不限流量·Netflix HBO·200M, server: 195.123.238.248, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 流媒体·香港HK·I170·空闲·不限流量·Netflix TVB·1000M, server: 103.44.61.135, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·美国US·O202·空闲·不限流量·直连海外·1000M, server: 45.144.243.202, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·美国US·O134·空闲·不限流量·直连海外·200M, server: 45.146.121.134, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·日本JP·O221·爆满·不限流量·直连海外·1000M, server: 185.160.24.221, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·日本JP·O154·空闲·不限流量·直连海外·1000M, server: 185.168.20.154, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·日本JP·O203·均衡·不限流量·直连海外·1000M, server: 185.160.26.203, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·日本JP·O216·空闲·不限流量·直连海外·1000M, server: 185.160.26.216, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·日本JP·O11·空闲·不限流量·直连海外·1000M, server: 194.156.231.11, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·新加坡SP·O141·空闲·不限流量·直连海外·1000M, server: 45.67.54.141, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·日本JP·O213·空闲·不限流量·1000M, server: 185.160.26.213, port: 443, type: trojan, password: 9cuokJ, sni: download.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·美国US·O69·空闲·不限流量·1000M, server: 45.146.122.69, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}
+  - {name: 普通·美国US·O230·空闲·不限流量·1000M, server: 91.220.202.230, port: 443, type: trojan, password: 9cuokJ, sni: ctldl.windowsupdate.com, skip-cert-verify: true}

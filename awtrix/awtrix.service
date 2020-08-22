@@ -1,0 +1,13 @@
+[Unit]
+Description=AWTRIX HOST
+After=network.target
+
+[Service]
+WorkingDirectory=/usr/local/awtrix
+Type=simple
+ExecStart=/usr/bin/java -jar /usr/local/awtrix/awtrix.jar
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
