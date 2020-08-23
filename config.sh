@@ -115,6 +115,10 @@ if [ $? -eq 0 ]; then
   proxy=proxychains
 fi
 
+echo 克隆clash-dashboard
+rm -rf /.config/clash/clash-dashboard
+$proxy git clone -b gh-pages https://github.com/Dreamacro/clash-dashboard.git /.config/clash/clash-dashboard
+
 echo 配置awtrix
 type java > /dev/null 2>&1
 if [ $? -ne 0 ];then
