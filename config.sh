@@ -1,8 +1,12 @@
 #!/bin/bash
-if [ $# -ne 1 ];then
-  echo 没有传入samba服务器的密码
+if [ $# -ne 2 ];then
+  echo 没有传入pi用户和samba服务器的密码
   exit 1
 fi
+
+pi_pw=$1
+smb_pw=$2
+
 echo 配置locale和wifi国家
 raspi-config nonint do_change_locale en_US.UTF-8
 
@@ -16,7 +20,7 @@ echo 修改时区
 raspi-config nonint do_change_timezone Asia/Shanghai
 
 echo 设置pi用户密码
-echo pi:615598813 |chpasswd
+echo pi:$pi_pw |chpasswd
 
 echo 准备写入temp温度查询命令
 grep -q "temp" /home/pi/.bashrc
@@ -185,5 +189,5 @@ if [ $? -eq 0 ];then
   echo samba的用户已经创建,删除旧用户重新创建
   smbpasswd -x pi
 fi
-  (echo $1;echo $1) | smbpasswd -a pi
-  echo samba配置信息 用户名:pi 密码:$1
+  (echo $smb_pw;echo $smb_pw) | smbpasswd -a pi
+  echo samba配置信息 用户名:pi 密码:$smb_pw
