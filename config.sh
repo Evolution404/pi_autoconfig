@@ -111,7 +111,7 @@ systemctl enable tproxy
 systemctl start tproxy
 
 echo 配置proxychains
-type proxychains > /dev/null 2>&1 || apt install -y proxychains
+type proxychains > /dev/null 2>&1 || dpkg -i proxy/proxychains/libproxychains3_3.1-8.1_armhf.deb proxy/proxychains/proxychains_3.1-8.1_all.deb
 sed -i 's/^socks4 \t127.0.0.1 9050/socks5  127.0.0.1 7890/' /etc/proxychains.conf
 sed -i 's/^#\(quiet_mode\)/\1/' /etc/proxychains.conf
 curl -x localhost:7890 google.com >> /dev/null
@@ -119,9 +119,9 @@ if [ $? -eq 0 ]; then
   proxy=proxychains
 fi
 
-echo 克隆clash-dashboard
-rm -rf /.config/clash/clash-dashboard
-$proxy git clone -b gh-pages https://github.com/Dreamacro/clash-dashboard.git /.config/clash/clash-dashboard
+#echo 克隆clash-dashboard
+#rm -rf /.config/clash/clash-dashboard
+#$proxy git clone -b gh-pages https://github.com/Dreamacro/clash-dashboard.git /.config/clash/clash-dashboard
 
 echo 配置awtrix
 type java > /dev/null 2>&1
@@ -163,23 +163,32 @@ type smbd > /dev/null 2>&1 ||  $proxy apt install -y samba
 
 grep -q "NAS" /etc/samba/smb.conf
 if [ $? -ne 0 ];then
+mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
 cat >> /etc/samba/smb.conf << 'END_TEXT'
+[global]
+   write cache size = 262144
+   workgroup = WORKGROUP
+   log file = /var/log/samba/log.%m
+   max log size = 1000
+   logging = file
+   panic action = /usr/share/samba/panic-action %d
+   server role = standalone server
+   obey pam restrictions = yes
+   unix password sync = yes
+   passwd program = /usr/bin/passwd %u
+   passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+   pam password change = yes
+   map to guest = bad user
+   usershare allow guests = yes
+
 [NAS]
-#随便写
    comment = NAS
-#可以在共享中看到这个文件夹
    browseable = yes
-#不是只读
    read only = no
-#创建的文件具有全部权限
    create mask = 0777
-#创建的目录具有全部权限
    directory mask = 0777
-#指定pi用户可以访问
    valid users = pi
-#共享的路径
    path = /home/nas
-#登陆必须输入用户名密码
    guest ok = no
 END_TEXT
   echo "写入samba配置成功"
