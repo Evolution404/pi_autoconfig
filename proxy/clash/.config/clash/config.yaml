@@ -47,7 +47,7 @@ proxy-groups:
 proxy-providers:
   westworldT-Sub:
     type: http
-    url: "http://127.0.0.1:25500/sub?target=clash&url=https%3A%2F%2Fxbrss.com%2Frss%2Fv809dCv%2FEQCdo6%3Fnet_type%3DTROJAN&exclude=%E5%89%A9%E4%BD%99%7C%E5%AE%98%E7%BD%91%7C%E8%AE%A2%E9%98%85%7C----&emoji=false&list=true&udp=false&tfo=false&scv=true&fdn=false&sort=false"
+    url: "http://127.0.0.1:25500/sub?target=clash&url=https%3A%2F%2Fxbrss.com%2Frss%2Fv809dCv%2FEQCdo6%3Fnet_type%3DTROJAN&exclude=%E6%B8%B8%E6%88%8F%7C%E5%AE%98%E7%BD%91%7C%E7%A6%81%E8%A7%86%E9%A2%91%7C%E4%B8%93%E7%BA%BF%7C%E8%AE%A2%E9%98%85%7C---&emoji=false&list=true&udp=false&tfo=false&scv=true&fdn=false&sort=false"
     interval: 3600
     path: ./Proxy/westworldTList.yaml
     health-check:
@@ -57,7 +57,7 @@ proxy-providers:
 
   westworldV-Sub:
     type: http
-    url: "http://127.0.0.1:25500/sub?target=clash&url=https%3A%2F%2Fxbrss.com%2Frss%2Fv809dCv%2FEQCdo6%3Fnet_type%3DVMESS&exclude=%E5%89%A9%E4%BD%99%7C%E5%AE%98%E7%BD%91%7C%E8%AE%A2%E9%98%85%7C----&emoji=false&list=true&udp=false&tfo=false&scv=false&fdn=false&sort=false"
+    url: "http://127.0.0.1:25500/sub?target=clash&url=https%3A%2F%2Fxbrss.com%2Frss%2Fv809dCv%2FEQCdo6%3Fnet_type%3DVMESS&exclude=%E6%B8%B8%E6%88%8F%7C%E5%AE%98%E7%BD%91%7C%E7%A6%81%E8%A7%86%E9%A2%91%7C%E4%B8%93%E7%BA%BF%7C%E8%AE%A2%E9%98%85%7C---&emoji=false&list=true&udp=false&tfo=false&scv=false&fdn=false&sort=false"
     interval: 3600
     path: ./Proxy/westworldVList.yaml
     health-check:

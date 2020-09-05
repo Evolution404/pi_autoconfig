@@ -110,16 +110,20 @@ fi
 systemctl enable tproxy
 systemctl start tproxy
 
+echo apt离线安装
+mv /etc/apt/sources.list /etc/apt/sources.list.bak
+cp -r apt-offline /
+echo deb [trusted=yes] file:/// /apt-offline/ > /etc/apt/sources.list
+apt update
+apt install -y dnsutils proxychains default-jdk git libncurses-dev samba
+mv /etc/apt/sources.list.bak /etc/apt/sources.list
+rm -rf /apt-offline
+
 echo 配置proxychains
 type proxychains > /dev/null 2>&1
 if [ $? -ne 0 ];then
-  mv /etc/apt/sources.list /etc/apt/sources.list.bak
-  cp -r proxy/proxychains /
-  echo deb file:/// /proxychains/ > /etc/apt/sources.list
-  apt update --allow-insecure-repositories
-  apt install -y proxychains --allow-unauthenticated
-  mv /etc/apt/sources.list.bak /etc/apt/sources.list
-  rm -rf /proxychains
+  echo proxychains没有安装成功
+  exit 1
 fi
 sed -i 's/^socks4 \t127.0.0.1 9050/socks5  127.0.0.1 7890/' /etc/proxychains.conf
 sed -i 's/^#\(quiet_mode\)/\1/' /etc/proxychains.conf
@@ -135,9 +139,8 @@ fi
 echo 配置awtrix
 type java > /dev/null 2>&1
 if [ $? -ne 0 ];then
-  $proxy apt update
-  $proxy apt upgrade -y
-  $proxy apt install -y default-jdk
+  echo java没有安装成功
+  exit 1
 fi
 
 if [ ! -d /usr/local/awtrix ]; then
@@ -155,7 +158,11 @@ systemctl start awtrix
 echo 安装vim
 type vim > /dev/null 2>&1
 if [ $? -ne 0 ];then
-  type git > /dev/null 2>&1 || $proxy apt install -y git ncurses-dev
+  type git > /dev/null 2>&1
+  if [ $? -ne 0 ];then
+    echo git没有安装成功
+    exit 1
+  fi
   cd /home/pi
   $proxy git clone https://github.com/vim/vim.git
   cd vim
@@ -168,7 +175,11 @@ fi
 
 
 echo 安装samba
-type smbd > /dev/null 2>&1 ||  $proxy apt install -y samba
+type smbd > /dev/null 2>&1
+if [ $? -ne 0 ];then
+  echo samba没有安装成功
+  exit 1
+fi
 
 grep -q "NAS" /etc/samba/smb.conf
 if [ $? -ne 0 ];then
