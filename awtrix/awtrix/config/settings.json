@@ -58,7 +58,7 @@
   "MQTTBroker": false,
   "AlarmEnabled": false,
   "Resistor": 1000,
-  "MinBrightness": 3,
+  "MinBrightness": 20,
   "Telegram": "false",
   "SleepLux": 5,
   "RainbowDivider": 1,
