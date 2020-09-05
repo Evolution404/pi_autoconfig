@@ -111,7 +111,16 @@ systemctl enable tproxy
 systemctl start tproxy
 
 echo 配置proxychains
-type proxychains > /dev/null 2>&1 || dpkg -i proxy/proxychains/libproxychains3_3.1-8.1_armhf.deb proxy/proxychains/proxychains_3.1-8.1_all.deb
+type proxychains > /dev/null 2>&1
+if [ $? -ne 0 ];then
+  mv /etc/apt/sources.list /etc/apt/sources.list.bak
+  cp -r proxy/proxychains /
+  echo deb file:/// /proxychains/ > /etc/apt/sources.list
+  apt update --allow-insecure-repositories
+  apt install -y proxychains --allow-unauthenticated
+  mv /etc/apt/sources.list.bak /etc/apt/sources.list
+  rm -rf /proxychains
+fi
 sed -i 's/^socks4 \t127.0.0.1 9050/socks5  127.0.0.1 7890/' /etc/proxychains.conf
 sed -i 's/^#\(quiet_mode\)/\1/' /etc/proxychains.conf
 curl -x localhost:7890 google.com >> /dev/null
